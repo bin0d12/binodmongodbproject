@@ -42,11 +42,37 @@ const findEmp = (req, res) => {
 }
 // update employee
 const updateEmp = (req, res) => {
-    let emp = req.body.id;
+    let emp = req.body.emp;
+    let updateEmp = {
+        name: req.body.name,
+        designation: req.body.designation,
+        email: req.body.email,
+        phone: req.body.phone,
+        age: req.body.age,
+    }
+    scemaEmp.findOneAndUpdate(emp, {$set: updateEmp}).then(() => {
+        res.json({
+            message: 'update successufully'
+        })
+    }).catch(error => {
+        res.json({
+            message: "error while update"
+        })
+    })
     
 }
 // delete employee
 const deleteEmp = (req, res) => {
+    const empNo = req.body.empNo;
+    scemaEmp.findOneAndRemove(empNo).then(() => {
+        res.json({
+            message: "delete successfully"
+        })
+    }).catch(error => {
+        res.json({
+            message: "error while delete"
+        })
+    })
 
 }
 
