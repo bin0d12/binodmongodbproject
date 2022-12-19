@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const employeeRoutes = require('./routes/empRoutes')
 
+const cors = require('cors')
+
 mongoose.connect("mongodb://localhost:27017/testData");
 
 const db = mongoose.connection
@@ -16,6 +18,7 @@ db.once('open', () => {
     console.log("database connected");
 })
 const app = express();
+app.use(cors())
 
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended: true}));

@@ -16,9 +16,7 @@ const store = (req, res) => {
 // get all the data
 const index = (req, res) => {
     scemaEmp.find().then(response => {
-        res.json({
-            response
-        })
+        res.send(response)
     }) .catch(err => {
         res.json({
             message: "error in index"
