@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
 
 app.use('/api/employee', employeeRoutes)
-const port = 3000;
+const port = 5000;
 
 app.listen(port, () => {
     console.log(`port started listening${port}`);

@@ -4,11 +4,8 @@ const schema = mongoose.Schema
 
 const employeeSchema = new schema({
     name: {
-        type: String
+        type: Number
     },
-    // mail: {
-    //     type: String
-    // },
     designation: {
         type: String
     },

@@ -2,7 +2,7 @@ const response = require('express');
 const scemaEmp = require('../models/empModelsSchema');
 
 // store the data
-const store = (req, res) => {
+const store =  (req, res) => {
     let employee = new scemaEmp({
         name: req.body.name,
         designation: req.body.designation,
@@ -39,24 +39,41 @@ const findEmp = (req, res) => {
     })
 }
 // update employee
-const updateEmp = (req, res) => {
+const updateEmp = async (req, res) => {
     let emp = req.body.emp;
-    let updateEmp = {
+    let updateEmp = [{
         name: req.body.name,
         designation: req.body.designation,
         email: req.body.email,
         phone: req.body.phone,
         age: req.body.age,
+    }]
+    try {
+        let result =  await scemaEmp.findOneAndUpdate(emp, {$set: updateEmp})
+        if(result) {
+            res.json({
+                message: 'update successufully'
+            })
+        }
+    }catch(err){
+        console.log("there is an error")
+        res.json({
+            message: 'there is an error'
+        })
     }
-    scemaEmp.findOneAndUpdate(emp, {$set: updateEmp}).then(() => {
-        res.json({
-            message: 'update successufully'
-        })
-    }).catch(error => {
-        res.json({
-            message: "error while update"
-        })
-    })
+//    console.log(result, "result");
+//    if(result.err){ console.log("there is an error")} else {
+    
+//    }
+//    .then(() => {
+        // res.json({
+        //     message: 'update successufully'
+        // })
+    // }).catch(error => {
+    //     res.json({
+    //         message: "error while update"
+    //     })
+    // })
     
 }
 // delete employee
@@ -71,9 +88,7 @@ const deleteEmp = (req, res) => {
             message: "error while delete"
         })
     })
-
 }
-
 module.exports = {
     index, store, findEmp, updateEmp, deleteEmp
 }
