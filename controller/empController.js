@@ -1,4 +1,3 @@
-const response = require('express');
 const scemaEmp = require('../models/empModelsSchema');
 
 // store the data

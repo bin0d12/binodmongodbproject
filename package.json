@@ -19,9 +19,10 @@
   },
   "homepage": "https://github.com/bin0d12/binodmongodbproject#readme",
   "dependencies": {
-    "body-parser": "^1.20.1",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
     "express": "^4.18.2",
     "mongoose": "^6.8.0",
     "morgan": "^1.10.0",

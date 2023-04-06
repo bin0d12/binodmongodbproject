@@ -1,0 +1,297 @@
+Web Socket is a protocol that provides full-duplex(multiway) communication i.e allows communication in both directions simultaneously. It is a modern web technology in which there is a continuous connection between the user’s browser(client) and the server. In this type of communication, between the web server and the web browser, both of them can send messages to each other at any point in time. Traditionally on the web, we had a request/response format where a user sends an HTTP request and the server responds to that. This is still applicable in most cases, especially those using RESTful API. But a need was felt for the server to also communicate with the client, without getting polled(or requested) by the client. The server in itself should be able to send information to the client or the browser. This is where Web Socket comes into the picture.
+In order to make use of the Socket in NodeJS, we first need to install a dependency that is socket.io. We can simply install it by running the below command in cmd and then add this dependency to your server-side javascript file also install an express module which is basically required for server-side application
+ 
+
+ npm install socket.io --save
+ npm install express --save
+Note: npm in the above commands stands for the node package manager, a place from where we install all the dependencies. –save flag is no longer needed after Node 5.0.0 version, as all the modules that we now install will be added to dependencies. 
+Create server in your server-side JavaScript file: 
+
+const express = require('express'); // using express
+const socketIO = require('socket.io');
+const http = require('http')
+const port = process.env.PORT||3000 // setting the port
+let app = express();
+let server = http.createServer(app)
+let io = socketIO(server)
+ 
+ app.get("/", (req, res) => {
+   res.sendFile(__dirname + "/client-side.html");
+ });
+ 
+server.listen(port);
+Now we need to make a connection from the server-side to the client-side through which the server will be able to send data to the client. 
+ 
+
+
+// make a connection with the user from server side
+io.on('connection', (socket)=>{
+  console.log('New user connected');
+});
+Similarly, from the client-side, we need to add a script file and then make a connection to a server through which users send data to a server. 
+ 
+
+var socket=io()
+// make connection with server from user side
+socket.on('connect', function(){
+  console.log('Connected to Server')
+ 
+});
+Now to send messages or data from a server to the user we generate a socket “socket.on()” inside the connection that we made from the server-side.
+ 
+
+// listener when server emit any message
+socket.on('createMessage', (newMessage)=>{
+    console.log('newMessage', newMessage);
+  })
+Now either data can be sent from any side so that a connection is generated between server and client. Then if the server emits a message then the client can listen to that message or if the client emits a message then the server can listen to that message. So we have to generate a socket for both messages emitted and message listen on both the server and the client-side.
+Server-side code Example:
+ 
+
+const express=require('express');
+const socketIO=require('socket.io');
+const http=require('http')
+const port=process.env.PORT||3000
+var app=express();
+let server = http.createServer(app);
+var io=socketIO(server);
+ 
+// make connection with user from server side
+io.on('connection', (socket)=>{
+  console.log('New user connected');
+   //emit message from server to user
+   socket.emit('newMessage', {
+     from:'jen@mds',
+     text:'hepppp',
+     createdAt:123
+   });
+ 
+  // listen for message from user
+  socket.on('createMessage', (newMessage)=>{
+    console.log('newMessage', newMessage);
+  });
+ 
+  // when server disconnects from user
+  socket.on('disconnect', ()=>{
+    console.log('disconnected from user');
+  });
+});
+ 
+ app.get("/", (req, res) => {
+   res.sendFile(__dirname + "/client-side.html");
+ });
+ 
+server.listen(port);
+Output:
+
+
+
+Client side code Example: 
+ 
+
+var socket=io()
+ 
+// connection with server
+socket.on('connect', function(){
+  console.log('Connected to Server')
+ 
+});
+ 
+// message listener from server
+socket.on('newMessage', function(message){
+ console.log(message);
+});
+ 
+// emits message from user side
+socket.emit('createMessage', {
+  to:'john@ds',
+  text:'what kjkljd'
+});
+ 
+// when disconnected from server
+socket.on('disconnect', function(){
+  console.log('Disconnect from server')
+});
+Output: 
+
+
+
+
+Related Articles
+1.
+Nodejs - Connect MongoDB with Node app using MongooseJS
+2.
+Nodejs | Web Crawling using Cheerio
+3.
+How the single threaded non blocking IO model works in NodeJS ?
+4.
+Nodejs | GM solarize() Function
+5.
+Email Verification using OTP in NodeJS
+6.
+NodeJS process.nextTick() Method
+7.
+Create Newsletter app using MailChimp and NodeJS
+8.
+How to make to do list using Nodejs ?
+9.
+How to kill all processes in NodeJS?
+10.
+NodeJS sign.sign(privateKey[, outputEncoding])
+
+Like
+13
+Next
+What is web socket and how it is different from the HTTP?
+Article Contributed By :
+https://media.geeksforgeeks.org/auth/avatar.png
+daya1331
+@daya1331
+Vote for difficulty
+Current difficulty : Easy
+Easy
+Normal
+Medium
+Hard
+Expert
+Improved By :
+mridulmanochagfg
+souravmandal
+gkseedhar
+Article Tags :
+JavaScript
+Node.js
+Web Technologies
+Improve Article
+Report Issue
+Courses
+course-img
+
+97k+ interested Geeks
+Full Stack Development with React & Node JS - Live
+
+Intermediate and Advance
+course-img
+
+759k+ interested Geeks
+Complete Interview Preparation - Self Paced
+
+Beginner to Advance
+course-img
+
+12k+ interested Geeks
+DevOps Engineering - Planning to Production
+
+Beginner to Advance
+course-img
+
+82k+ interested Geeks
+JAVA Backend Development - Live
+
+Intermediate and Advance
+
+
+
+
+Explore
+System Design Tutorial
+Machine Learning Tutorial
+Data Science Tutorial
+Company-Wise Interview Preparation
+
+
+A-143, 9th Floor, Sovereign Corporate Tower,
+Sector-136, Noida, Uttar Pradesh - 201305
+feedback@geeksforgeeks.org
+Company
+About Us
+Careers
+In Media
+Contact Us
+Privacy Policy
+Copyright Policy
+Advertise with us
+Languages
+Python
+Java
+C++
+GoLang
+SQL
+R Language
+Android Tutorial
+Data Structures
+Array Data Structure
+String Data Structure
+Linked List Data Structure
+Stack Data Structure
+Queue Data Structure
+Tree
+Graph
+Algorithms
+Sorting
+Searching
+Greedy
+Dynamic Programming
+Pattern Searching
+Recursion
+Backtracking
+Web Development
+HTML
+CSS
+JavaScript
+Bootstrap
+ReactJS
+AngularJS
+NodeJS
+Write & Earn
+Write an Article
+Improve an Article
+Pick Topics to Write
+Write Interview Experience
+Internships
+Video Internship
+Computer Science
+Operating Systems
+Computer Network
+Database Management System
+Software Engineering
+Digital Logic Design
+Computer Graphics
+Engineering Maths
+Data Science & ML
+Data Science With Python
+Data Science For Beginner
+Machine Learning Tutorial
+Maths For Machine Learning
+Pandas Tutorial
+NumPy Tutorial
+OpenCV Python Tutorial
+Interview Corner
+Company Preparation
+Preparation for SDE
+Company Interview Corner
+Experienced Interview
+Internship Interview
+Competitive Programming
+Python
+Python Tutorial
+Python Programming Examples
+Django Tutorial
+Python Projects
+Python Tkinter
+OpenCV Python Tutorial
+School [Class 6-12]
+CBSE Notes for Class 8
+CBSE Notes for Class 9
+CBSE Notes for Class 10
+CBSE Notes for Class 11
+CBSE Notes for Class 12
+English Grammar
+UPSC/SSC/BANKING
+SSC CGL Syllabus
+SBI PO Syllabus
+IBPS PO Syllabus
+UPSC Ethics Notes
+UPSC Economics Notes
+UPSC History Notes
+@geeksforgeeks , Some rights reserved

@@ -14,7 +14,7 @@ const employeeSchema = new schema({
     },
     phone: {
         type: String
-    }, 
+    },
     age: { 
         type: String
     }
